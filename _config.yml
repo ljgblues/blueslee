@@ -93,8 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-##theme: next
-theme: landscape
+theme: next
 
 sitemap:
   path: sitemap.xml

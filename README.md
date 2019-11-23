@@ -1,4 +1,0 @@
-## Bleuslee
-
-----
-www.bluesleeword.ml

@@ -10,8 +10,8 @@ keywords:
   - 编程
   - 前端
   - web开发
-author: Bleuslee
-language: zh-Hans
+author: Blueslee
+language: zh-CN
 timezone: 'Asia/Seoul'
 
 # URL
@@ -103,6 +103,8 @@ sitemap:
 search:
   path: search.xml
   field: post
+  format: html
+  limit: 10000
 
 
 # Deployment

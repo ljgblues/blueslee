@@ -239,10 +239,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-13 16:19:00 / 修改时间：16:22:31" itemprop="dateCreated datePublished" datetime="2019-11-13T16:19:00+09:00">2019-11-13</time>
+              <time title="创建时间：2019-11-13 16:19:00" itemprop="dateCreated datePublished" datetime="2019-11-13T16:19:00+09:00">2019-11-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-30 19:33:37" itemprop="dateModified" datetime="2019-11-30T19:33:37+09:00">2019-11-30</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -327,9 +333,26 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-13 16:13:08 / 修改时间：17:34:01" itemprop="dateCreated datePublished" datetime="2019-11-13T16:13:08+09:00">2019-11-13</time>
+              <time title="创建时间：2019-11-13 16:13:08" itemprop="dateCreated datePublished" datetime="2019-11-13T16:13:08+09:00">2019-11-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-30 19:35:39" itemprop="dateModified" datetime="2019-11-30T19:35:39+09:00">2019-11-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Frontends/" itemprop="url" rel="index">
+                    <span itemprop="name">Frontends</span>
+                  </a>
+                </span>
             </span>
 
           
@@ -343,7 +366,119 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <blockquote>
+<p>本文转载自一位不愿透露姓名的开发者</p>
+</blockquote>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在平时的 H5 移动端开发时，我们难免会遇到各种各样的坑点，这篇文章就带着大家来看看怎么解决，文章较长，建议收藏方便以后查阅！</p>
+<h2 id="弹出框中的滚动事件冒泡导致-body-也滚动"><a href="#弹出框中的滚动事件冒泡导致-body-也滚动" class="headerlink" title="弹出框中的滚动事件冒泡导致 body 也滚动"></a>弹出框中的滚动事件冒泡导致 body 也滚动</h2><p>如下图所示，当弹出框内容在滚动时，如果滚动到边界，会导致页面内容也会跟着滚动<br><img src="https://i.imgur.com/sUl9iBK.jpg?200x" alt=""></p>
+<h4 id="解决方案-一"><a href="#解决方案-一" class="headerlink" title="解决方案 一"></a>解决方案 一</h4><p>在显示对话框时，将 <code>html</code> 和 <code>body</code> 的 <code>height</code> 都设置为 100%，<code>overflow</code> 都设置为 <code>hidden</code>，<code>position</code> 都设置为 <code>relative</code>, 然后在对话框关闭时将 <code>html</code> 和 <code>body</code> 的 <code>height</code> 与 <code>overflow</code> 属性都设置为 <code>auto</code>。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>当瞬间给 html 和 body 身上设置<code>{height:100%;overflow:hidden;position:relative;}</code>时，页面会返回到顶部，性能会受影响。</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>当弹框弹出时记录下此时的滚动条高度，当关闭弹框时 赋值给 window</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> offsetTop = <span class="built_in">window</span>.scrollTop;</span><br><span class="line"><span class="built_in">window</span>.scrollTo(<span class="number">0</span>, offsetTop);</span><br></pre></td></tr></table></figure>
+
+<h4 id="解决方案-二"><a href="#解决方案-二" class="headerlink" title="解决方案 二"></a>解决方案 二</h4><p>在 body 内加一层<code>div.scroll-wrapper</code>，这个 div 包含页面的所有显示内容但不包含弹出框，<code>.scroll-wrapper</code>和<code>html</code>还有<code>body</code>的<code>height</code>都为<code>100%</code>，<br><code>html</code>和<code>body</code>的<code>overflow</code>为<code>hidden</code>，<code>.scroll-wrapper</code>的<code>overflow为scroll</code>。<br>让<code>.scroll-wrapper</code>的<code>div</code>来控制页面内容的滚动。<br>因为弹出框是通过 fix 布局不属于<code>.scroll-wrapper</code>的子元素，所以滚动不会冒泡到<code>.scroll-wrapper</code>上。<br>DOM 结构：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"scroll-wrapper"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"banner"</span>&gt;</span></span><br><span class="line">          banner</span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>p <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"mask"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>CSS 代码</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>,</span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.scroll-wrapper</span> &#123;</span><br><span class="line">  <span class="attribute">overflow</span>: scroll;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h5><ol>
+<li>js 无法监听 window 的滚事件，以及元素 的 offsetTop 值也会随页面滚动变化 （页面需要用到的 window.scrollTop 和 offsetTop 时）</li>
+<li>ios 设备上自设的滚动条相当卡顿，下面会提到。</li>
+</ol>
+<h3 id="最终解决方案：😄"><a href="#最终解决方案：😄" class="headerlink" title="最终解决方案：😄"></a>最终解决方案：😄</h3><p>当触发弹出层时禁止 document 身上的默认触摸行为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">"touchmove"</span>, _preventDefault, &#123; <span class="attr">passive</span>: <span class="literal">false</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>passive: false 这个必须得加，兼容 ios.<br>当关闭弹出层时开启 document 身上的触摸行为：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.removeEventListener(</span><br><span class="line">  <span class="string">"touchmove"</span>,</span><br><span class="line">  ev =&gt; &#123;</span><br><span class="line">    ev.preventDefault();</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123; <span class="attr">passive</span>: <span class="literal">false</span> &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="ios-设备自定义滚动条不流畅问题"><a href="#ios-设备自定义滚动条不流畅问题" class="headerlink" title="ios 设备自定义滚动条不流畅问题"></a>ios 设备自定义滚动条不流畅问题</h2><h4 id="解决方案-一-1"><a href="#解决方案-一-1" class="headerlink" title="解决方案 一"></a>解决方案 一</h4><p>给滚动元素添加 css 属性：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">-webkit-overflow-scrolling</span>: <span class="selector-tag">touch</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>原理：这也可以开启了 IOS 系统的硬件加速功能，所以会提升用户体验。</p>
+</blockquote>
+<h5 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h5><h6 id="缺点-1-在苹果手机上使用了-webkit-overflow-scrolling-touch-后，"><a href="#缺点-1-在苹果手机上使用了-webkit-overflow-scrolling-touch-后，" class="headerlink" title="缺点 1. 在苹果手机上使用了-webkit-overflow-scrolling:touch;后，"></a>缺点 1. 在苹果手机上使用了<code>-webkit-overflow-scrolling:touch;</code>后，</h6><p>可能会导致使用<code>position:fixed;</code>固定定位的元素，随着页面一起滚动，只有滚动停止时才会恢复原位，但是如果不用<code>-webkit-overflow-scrolling:touch;</code>这个属性的话，<br>使用<code>overflow-y:scroll</code>;属性的盒子滑动就会非常不流畅。</p>
+<h6 id="对应处理方法"><a href="#对应处理方法" class="headerlink" title="对应处理方法"></a>对应处理方法</h6><p>使用 overflow-y 属性的元素不应该和固定元素在一个层级，使用 overflow-y 属性的元素外面加一层和固定元素在同一层级可以解决该问题。</p>
+<h6 id="缺点-2-最严重的，页面会出现假死，滚动到底部，滚不动了。"><a href="#缺点-2-最严重的，页面会出现假死，滚动到底部，滚不动了。" class="headerlink" title="缺点 2. 最严重的，页面会出现假死，滚动到底部，滚不动了。"></a>缺点 2. 最严重的，页面会出现假死，滚动到底部，滚不动了。</h6><p>为什么会有卡住不动的这个 bug？<br>最常见的例子就是：</p>
+<ol>
+<li>在 safari 上，使用了-webkit-overflow-scrolling:touch 之后，页面偶尔会卡住不动。</li>
+<li>在 safari 上，点击其他区域，再在滚动区域滑动，滚动条无法滚动的 bug。</li>
+<li>通过动态添加内容撑开容器，结果根本不能滑动的 bug。<br>这个 bug 产生于 ios8 以上（不十分肯定，但在 ios5~7 上需要手动使用 translateZ(0)打开硬件加速）。<br>Safari 对于 overflow-scrolling 用了原生控件来实现。<br>对于有-webkit-overflow-scrolling 的网页，会创建一个 UIScrollView，提供子 layer 给渲染模块使用。</li>
+</ol>
+<h6 id="webkit-overflow-scrolling-touch的其他坑："><a href="#webkit-overflow-scrolling-touch的其他坑：" class="headerlink" title="-webkit-overflow-scrolling:touch的其他坑："></a><code>-webkit-overflow-scrolling:touch</code>的其他坑：</h6><p>除此之外，这个属性还有很多 bug，包括且不限于以下几种：</p>
+<ol>
+<li>滚动中 scrollTop 属性不会变化</li>
+<li>手势可穿过其他元素触发元素滚动</li>
+<li>滚动时暂停其他 transition</li>
+</ol>
+<h6 id="对应处理方法-1"><a href="#对应处理方法-1" class="headerlink" title="对应处理方法"></a>对应处理方法</h6><ol>
+<li>保证使用了该属性的元素上没有设置定位<br>如果出现偶尔卡住不动的情况，那么在使用该属性的元素上不设置定位或者手动设置定位为 static<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">position</span>: <span class="selector-tag">static</span>;</span><br></pre></td></tr></table></figure>
+这样会解决<code>部分</code>因为定位(relative、fixed、absolute)导致的页面偶尔不能滚动的 bug。<br>但是滑动到顶部继续手指往下滑，或者到底部继续往上滑，还是会触发卡住的问题（其实是整个页面上下回弹），说他算 bug，其实就是 ios8 以上的特性，<br>如果滚动区域大一点，用户不会觉得这是 bug，如果小了，用户会不知道发生了什么而卡住了。<br>视频在这，<a href="https://www.youtube.com/watch?v=MkAVYbO_joo" target="_blank" rel="noopener">https://www.youtube.com/watch?v=MkAVYbO_joo</a></li>
+<li>如果添加动态内容页面不能滚动，让子元素 height+1<br>如果在<code>-webkit-overflow-scrolling:touch</code>属性的元素上，想通过动态添加内容来撑开容器，触发滚动，是有 bug 的，页面是会卡住不动的。<br>国内没有人讨论这个问题，国外倒是很多，例如下面的描述：<br><img src="https://i.imgur.com/yaBiBJf.jpg" alt="https://i.imgur.com/yaBiBJf.jpg"><br>收集了很多资料，用了之后，下面的方法真正的解决了我的问题，真是直呼神奇，方案如下图：<br>图一：<br><img src="https://i.imgur.com/AJfzhbX.jpg" alt="https://i.imgur.com/AJfzhbX.jpg"><br>图二：<br><img src="https://i.imgur.com/lyaQebD.jpg" alt="https://i.imgur.com/lyaQebD.jpg"><br>方法就是在<code>webkit-overflow-scrolling:touch</code>属性的下一层子元素上，将<code>height</code>加 1%或 1px。从而主动触发<code>scrollbar</code><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">main-inner</span> &#123;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="built_in">calc</span>(100% + 1px);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*你也可以直接加伪元素上：*/</span></span><br><span class="line"><span class="selector-tag">main</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="built_in">calc</span>(100% + 1px);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+这个方案不得不说真的好用。。当然还有其他方案，不过要写 js 或者 jq 了，麻烦。</li>
+</ol>
+<p><code>不过</code>，非弹出层的横向自定义的滚动使用该 css 属性还能凑合。</p>
+<h5 id="最终解决方案：😄-1"><a href="#最终解决方案：😄-1" class="headerlink" title="最终解决方案：😄"></a>最终解决方案：😄</h5><p>就是使用<a href="https://github.com/cubiq/iscroll" target="_blank" rel="noopener">iScroll</a>这样的库</p>
+<h2 id="ios-设备自定义滑块无法控制原生滚动条"><a href="#ios-设备自定义滑块无法控制原生滚动条" class="headerlink" title="ios 设备自定义滑块无法控制原生滚动条"></a>ios 设备自定义滑块无法控制原生滚动条</h2><p>如下图我想通过这个按钮来快速滚动页面<br><img src="https://i.imgur.com/N8Vw5tJ.jpg" alt="https://i.imgur.com/N8Vw5tJ.jpg"><br>查了一些资料，这种交互在 app 中比较常见，应用在网页中的没查到</p>
+<h5 id="对应处理方法-2"><a href="#对应处理方法-2" class="headerlink" title="对应处理方法"></a>对应处理方法</h5><ol>
+<li>自定义滚动盒子及滑块；</li>
+<li>使用插件 <a href="https://github.com/cubiq/iscroll" target="_blank" rel="noopener">iScroll</a> ,<a href="http://manos.malihu.gr/jquery-custom-content-scroller/" target="_blank" rel="noopener">jquery-custom-content-scroller</a></li>
+</ol>
+<h6 id="缺点-3"><a href="#缺点-3" class="headerlink" title="缺点"></a>缺点</h6><p>使用以上办法，js 无法监听 window 的滚事件，以及元素 的 offsetTop 值也会随页面滚动变化 （页面需要用到的 window.scrollTop 和 offsetTop 时）</p>
+<h2 id="移动端-ios-直接设置-currentTime-无效解决方法"><a href="#移动端-ios-直接设置-currentTime-无效解决方法" class="headerlink" title="移动端 ios 直接设置 currentTime 无效解决方法"></a>移动端 ios 直接设置 currentTime 无效解决方法</h2><h5 id="情况-音乐从一个页面进入另一个页面后，要接着上一页面播放时间播放，所以进入新页面后设置-currentTime-为上个页面播放时间"><a href="#情况-音乐从一个页面进入另一个页面后，要接着上一页面播放时间播放，所以进入新页面后设置-currentTime-为上个页面播放时间" class="headerlink" title="情况: 音乐从一个页面进入另一个页面后，要接着上一页面播放时间播放，所以进入新页面后设置 currentTime 为上个页面播放时间"></a>情况: 音乐从一个页面进入另一个页面后，要接着上一页面播放时间播放，所以进入新页面后设置 currentTime 为上个页面播放时间</h5><p>安卓是页面加载时触发；ios 是 play()后才触发<br>ios：直接给<code>currentTime</code>赋值是无效的，会变成 0</p>
+<h6 id="最终解决方案：😄-2"><a href="#最终解决方案：😄-2" class="headerlink" title="最终解决方案：😄"></a>最终解决方案：😄</h6><p>在判断音乐可播放时（canplay）再设置 currentTime，但是注意这个只能触发一次</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="keyword">this</span>._audio).one(<span class="string">"canplay"</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">//设置播放时间</span></span><br><span class="line">  <span class="keyword">this</span>._audio.currentTime = isPercentage</span><br><span class="line">    ? <span class="built_in">Math</span>.floor(<span class="keyword">this</span>._audio.duration * (num / <span class="number">100</span>))</span><br><span class="line">    : num;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="safari-利用原生滚动实现元素悬浮及动画"><a href="#safari-利用原生滚动实现元素悬浮及动画" class="headerlink" title="safari 利用原生滚动实现元素悬浮及动画"></a>safari 利用原生滚动实现元素悬浮及动画</h2><h4 id="情况-1-利用原生滚动实现滚动悬浮效果卡顿问题（fixed-translateY）"><a href="#情况-1-利用原生滚动实现滚动悬浮效果卡顿问题（fixed-translateY）" class="headerlink" title="情况 1 利用原生滚动实现滚动悬浮效果卡顿问题（fixed,translateY）"></a>情况 1 利用原生滚动实现滚动悬浮效果卡顿问题（fixed,translateY）</h4><p>原因分析：<br>iOS 最先响应屏幕反应。<br>响应顺序依次为<code>Touch——Media——Service——Core</code>架构，当用户只要触摸接触了屏幕之后，<br>系统就会最优先去处理屏幕显示也就是 Touch 这个层级，然后才是媒体（Media），服务（Service）以及 Core 架构。<br><img src="https://i.imgur.com/vTqMivL.jpg" alt="https://i.imgur.com/vTqMivL.jpg"><br>所以说，当系统接收到 Touch 事件之后会优先响应，此时会暂停屏幕上包括 js、css 的渲染。<br>这个时候不光是 css 动画不动了，哪怕页面没有加载完如果你手指头还停留在屏幕上那么页面也不会继续加载，直到你的手松开。</p>
+<blockquote>
+<p>请注意，<a href="https://stackoverflow.com/questions/20318002/animate-on-scroll-in-mobile-safari" target="_blank" rel="noopener">iOS设备会在滚动过程中冻结DOM操作</a>，并在滚动完成时将其排队以应用。我们目前正在研究允许在滚动开始之前应用DOM操作的方法。</p>
+</blockquote>
+<h4 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h4><ol>
+<li>自定义滚动元素<br>缺点:<ol>
+<li>浏览器的导航栏及工具栏无法隐藏</li>
+<li>需要执行动画的元素的offsetTop 会随滚动减小</li>
+</ol>
+</li>
+<li>使用滚动插件<br>缺点:<ol>
+<li>浏览器的导航栏及工具栏无法隐藏</li>
+<li>无法获取元素的 offsetTop 值来达到准确的fixed 定位，部分插件会提供滚动值，如 iScroll.</li>
+</ol>
+</li>
+</ol>
+<h4 id="最终解决方案：😄-3"><a href="#最终解决方案：😄-3" class="headerlink" title="最终解决方案：😄"></a>最终解决方案：😄</h4><ol>
+<li>滚动中出发元素fixed的事件改为 css 属性 position:sticky 实现悬浮；</li>
+</ol>
+<h2 id="额外知识"><a href="#额外知识" class="headerlink" title="额外知识"></a>额外知识</h2><p>写动画时注意一下几点:</p>
+<ol>
+<li>尽量使用transform实现动画，避免使用height,width,margin,padding,left等；</li>
+<li>要求较高时，可以开启浏览器GPU硬件加速：让浏览器在渲染动画时从CPU转向GPU<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">webkit-transform</span>: <span class="selector-tag">translate3d</span>(0,0,0);</span><br><span class="line">// 或</span><br><span class="line"><span class="selector-tag">webkit-transform</span>: <span class="selector-tag">translateZ</span>(0);</span><br><span class="line"></span><br><span class="line">// 值为0并没有真正使用3D效果，但浏览器却因此开启了GPU硬件加速模式。</span><br><span class="line">// 通过开启GPU硬件加速虽然可以提升动画渲染性能或解决一些棘手问题，但使用仍需谨慎，</span><br><span class="line">// 使用前一定要进行严谨的测试，否则它反而会大量占用浏览网页用户的系统资源，尤其是在移动端，肆无忌惮的开启GPU硬件加速会导致大量消耗设备电量，降低电池寿命等问题</span><br></pre></td></tr></table></figure></li>
+<li>如动画过程有闪烁（通常发生在动画开始的时候），可以尝试下面的Hack<br>通过-webkit-transform:transition3d/translateZ开启GPU硬件加速之后，<br>有些时候可能会导致浏览器频繁闪烁或抖动，可以尝试以下办法解决之<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">backface-visibility</span>: <span class="selector-tag">hidden</span>;</span><br><span class="line"><span class="selector-tag">perspective</span>: 1000;</span><br><span class="line">// -webkit-transform-style: preserve-3d; /*保留3D空间*/</span><br></pre></td></tr></table></figure></li>
+<li>尽可能少的使用box-shadows与gradients，box-shadows与gradients往往都是页面的性能杀手，尤其是在一个元素同时都使用了它们.</li>
+<li>尽可能的让动画元素不在文档流中，以减少重排<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">position</span>: <span class="selector-tag">fixed</span>;</span><br><span class="line"><span class="selector-tag">position</span>: <span class="selector-tag">absolute</span>;</span><br></pre></td></tr></table></figure>
+我们一起来看下CSS3动画其中一些属性性能消耗图:<br><img src="https://i.imgur.com/qdsIPkZ.jpg" alt="https://i.imgur.com/qdsIPkZ.jpg"><br>性能消耗图，由此可见最受欢饮和性能最好的莫过于<code>transform</code>和<code>opacity</code>了<br>原因：CSS动画属性会触发整个页面的重排<code>relayout</code>、重绘<code>repaint</code>、重组<code>recomposite</code><br>Paint通常是其中最花费性能的，尽可能避免使用触发paint的CSS动画属性，<br>这也是为什么我们推荐在CSS动画中使用<code>webkit-transform: translateX(3em)</code>的方案代替使用<code>left: 3em</code>，<br>因为left会额外触发layout与paint，而<code>webkit-transform</code>只触发整个页面<code>composite</code><br>（这也是为什么推荐在CSS动画中使用<code>webkit-transform: translateX(500px)</code>的方案代替使用<code>left: 500px</code>）；</li>
+</ol>
+<h3 id="页面绘制优化"><a href="#页面绘制优化" class="headerlink" title="页面绘制优化"></a>页面绘制优化</h3><ol>
+<li>简化浏览器重绘的复杂度<br>绘制，是填充像素的过程，这些像素将最终显示在用户的屏幕上。通常，这个过程是整个渲染流水线中耗时最长的一环，因此也是最需要避免发生的一环。<ol>
+<li>CSS属性中，除了transform和opacity之外，修改任何属性都会触发绘制</li>
+<li>如果布局被触发，那么接下来绘制一定会被触发。因为改变一个元素的几何属性就意味着该元素的所有像素都需要重新渲染！</li>
+<li>如果改变元素的非几何属性，也可能触发绘制，比如背景、文字颜色或者阴影效果，尽管这些属性的改变不会触发布局。</li>
+</ol>
+</li>
+<li>减小浏览器重绘区域<br>绘制并非总是在内存中的单层画面里完成的。实际上，浏览器在必要时将会把一帧画面绘制成多层画面，然后将这若干层画面合并成一张图片显示到屏幕上。<br><img src="https://i.imgur.com/0S2bmHf.jpg" alt="https://i.imgur.com/0S2bmHf.jpg"><br>这种绘制方式的好处是，使用tranforms来实现移动效果的元素将会被正常绘制，同时不会触发对其他元素的绘制。<br>在页面中创建一个新的渲染层的最好方式就是使用CSS属性will-change，Chrome/Opera/Firefox都支持该属性。<br>同时再与transform属性一起使用，就会创建一个新的组合层：<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.moving-element</span> &#123;</span><br><span class="line"> <span class="attribute">will-change</span>: transform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+对于那些目前还不支持will-change属性、但支持创建渲染层的浏览器，比如Safari和Mobile Safari，<br>你可以使用一个3D transform属性来强制浏览器创建一个新的渲染层：<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.moving-element</span> &#123;</span><br><span class="line"> <span class="attribute">transform</span>: <span class="built_in">translateZ</span>(0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+但需要注意的是：不要创建太多的渲染层。因为每创建一个新的渲染层，就意味着新的内存分配和更复杂的层的管理。</li>
+<li>避免大规模、复杂的布局<br>上面提到的，由于框架的限制，页面布局相对需求来说复杂很多。开发中应该尽量避免复杂的DOM结构，复杂的DOM结构更容易引起大面积的重绘。</li>
+<li>优先使用渲染层合并属性<br>渲染层的合并，就是把页面中完成了绘制过程的部分合并成一层，然后显示在屏幕上。<br>使用<code>transform/opacity</code>来实现动画效果，目前只有<code>transforms</code>和<code>opacity</code>这两个属性不会触发浏览器的布局和绘制，<br>对网页元素这两个属性的修改会直接触发渲染层合并。</li>
+<li>优化JavaScript的执行效率<ol>
+<li>对于动画效果的实现，避免使用setTimeout或setInterval，请使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">requestAnimationFrame</a>。</li>
+<li>把耗时长的JavaScript代码放到<a href="https://www.w3schools.com/html/html5_webworkers.asp" target="_blank" rel="noopener">Web Workers</a>中去做。<br>这里可以使用<code>Chrome DevTools</code>的<code>Timeline</code>和<code>JavaScript Profiler</code>来分析JavaScript的性能</li>
+</ol>
+</li>
+</ol>
+
       
     </div>
 
@@ -412,7 +547,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
